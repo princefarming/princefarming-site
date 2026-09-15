@@ -1,7 +1,8 @@
 ---
-title: "New EP 'Bleeding Star' Out Now"
+title: New EP 'Bleeding Star' Out Now
 pubDate: 2026-09-16
-description: "Listen to our brand new EP remixed and remastered."
+description: Listen to our brand new EP remixed and remastered.
+image: /uploads/bleeding-star-3000-pixels_orig.png
 ---
 
 We're excited to finally share **Bleeding Star** with everyone! This EP, takes 2 older songs, from the 2010's Cosmic Crunch Album and updates them with some fresh updates and mixing / mastering.  And also includes the song "Bleeding Star" which was written during that period but never released before.
