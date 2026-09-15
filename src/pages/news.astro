@@ -1,0 +1,28 @@
+---
+import { getCollection } from 'astro:content';
+
+// Fetch all posts from the blog collection and sort by newest date
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<html lang="en">
+  <head>
+    <title>News & Updates</title>
+  </head>
+  <body>
+    <h1>Latest Updates</h1>
+    <ul>
+      {posts.map((post) => (
+        <li>
+          <a href={`/news/${post.id}/`}>
+            <h2>{post.data.title}</h2>
+          </a>
+          <time>{post.data.pubDate.toLocaleDateString()}</time>
+          <p>{post.data.description}</p>
+        </li>
+      ))}
+    </ul>
+  </body>
+</html>
