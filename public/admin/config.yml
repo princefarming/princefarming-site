@@ -1,0 +1,22 @@
+backend:
+  name: github
+  repo: princefarming/princefarming-site
+  branch: main
+  use_pkce: true
+  app_id: Ov23ctOUfhCq4Galx2d7
+
+# Media folder where uploaded images are saved
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "blog"
+    label: "News & Updates"
+    folder: "src/content/blog"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Publish Date", name: "pubDate", widget: "datetime", format: "YYYY-MM-DD", dateFormat: "YYYY-MM-DD", timeFormat: false }
+      - { label: "Description", name: "description", widget: "string", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }
