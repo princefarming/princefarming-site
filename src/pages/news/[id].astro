@@ -1,57 +1,79 @@
 ---
+import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
-  return posts.map((post) => {
-    // Strip extension (.md) so URLs match cleanly (e.g., 'princefarming-bio')
-    const cleanId = post.id.replace(/\.(md|mdx)$/, '');
-
-    return {
-      params: { id: cleanId },
-      props: { post },
-    };
-  });
+  return posts.map((post) => ({
+    params: { id: post.id },
+    props: { post },
+  }));
 }
 
 const { post } = Astro.props;
-
-// Render Markdown content using Astro 5's render() helper
 const { Content } = await render(post);
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{post.data.title}</title>
-    <style>
-      body {
-        font-family: system-ui, sans-serif;
-        background: #111;
-        color: #eee;
-        margin: 0;
-        padding: 2rem;
-        display: flex;
-        justify-content: center;
-      }
-      article { max-width: 650px; width: 100%; }
-      a { color: #888; text-decoration: underline; }
-      h1 { text-transform: uppercase; letter-spacing: -0.05em; }
-      hr { border: 0; border-top: 1px solid #333; margin: 2rem 0; }
-    </style>
-  </head>
-  <body>
-    <article>
-      <p><a href="/">&larr; Back to Home</a></p>
+<BaseLayout title={`${post.data.title} | princefarming`} description={post.data.description}>
+  <article class="single-post">
+    <header class="post-header">
       <h1>{post.data.title}</h1>
-      {post.data.pubDate && (
-        <p><small>Published: {post.data.pubDate.toLocaleDateString()}</small></p>
-      )}
-      <hr />
-      
-      <!-- Renders your Markdown text as HTML -->
+      <time class="post-date">{post.data.pubDate}</time>
+    </header>
+
+    {post.data.image && (
+      <img 
+        src={post.data.image.startsWith('/') ? post.data.image : `/${post.data.image}`} 
+        alt={post.data.title} 
+        class="featured-image"
+      />
+    )}
+
+    <div class="post-body">
       <Content />
-    </article>
-  </body>
-</html>
+    </div>
+
+    <footer class="post-footer">
+      <a href="/news">&larr; Back to all news</a>
+    </footer>
+  </article>
+</BaseLayout>
+
+<!-- style>
+  .single-post {
+    margin-top: 1rem;
+  }
+
+  .post-header {
+    margin-bottom: 2rem;
+  }
+
+  .post-header h1 {
+    font-size: 2.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .post-date {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+  }
+
+  .featured-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border-color);
+  }
+
+  .post-body {
+    line-height: 1.8;
+    color: var(--text-secondary);
+  }
+
+  .post-footer {
+    margin-top: 3.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+  }
+</style -->

@@ -1,0 +1,53 @@
+---
+// src/pages/music.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getEntry, render } from 'astro:content';
+
+const musicPage = await getEntry('pages', 'music');
+
+// Safely handle missing entry
+if (!musicPage) {
+  throw new Error("Could not find 'music.md' in 'src/content/pages/'. Make sure the file exists!");
+}
+
+const { Content } = await render(musicPage);
+---
+
+<BaseLayout title={musicPage.data.title}>
+  <section class="page-header">
+    <h1>Music</h1>
+    {musicPage.data.subtitle && <p class="subtitle">{musicPage.data.subtitle}</p>}
+  </section>
+
+  <article class="music-body">
+    <Content />
+  </article>
+</BaseLayout>
+
+<!-- style>
+  .page-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .music-body {
+    line-height: 1.8;
+    color: var(--text-secondary);
+  }
+
+  .music-body h2 {
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-primary);
+  }
+
+  .music-body ul {
+    margin-left: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .music-body li {
+    margin-bottom: 0.5rem;
+  }
+</style -->

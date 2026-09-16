@@ -1,92 +1,54 @@
 ---
-const pageTitle = "Princefarming | Official Site";
-const latestRelease = {
-  title: "Bleeding Star",
-  type: "Single / EP",
-  embedUrl: "https://bandcamp.com/EmbeddedPlayer/track=12345678/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/transparent=true/"
-};
-
+import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
-// 1. Fetch posts and sort by pubDate (newest first)
-const allPosts = await getCollection('blog');
-const recentPosts = allPosts
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .slice(0, 3); // Take the 3 most recent posts
+const posts = (await getCollection('blog')).sort(
+  (a, b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime()
+);
 ---
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{pageTitle}</title>
-    <style>
-      body {
-        font-family: system-ui, sans-serif;
-        background: #111;
-        color: #eee;
-        margin: 0;
-        padding: 2rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-      main { max-width: 650px; width: 100%; text-align: center; }
-      h1 { font-size: 2.5rem; letter-spacing: -0.05em; text-transform: uppercase; }
-      .player { margin: 2rem 0; width: 100%; height: 300px; border: none; }
-      .links a { color: #fff; margin: 0 10px; text-decoration: underline; }
-    </style>
-  </head>
-  <body>
-    <main>
-      <h1>Princefarming</h1>
-      <p>Latest Release: <strong>{latestRelease.title}</strong></p>
-      
-	  <section class="splash-section">
-        <p>
-		  Back in the late 90s when I was creating a hotmail account I was looking 
-		  for an alias to go by, at the time it seemed like a neat/cool thing. 
-		  I remember reading a Life Magazine article that had a picture of 
-		  Prince Charles bent over looking at a garden, the caption was 
-		  "Prince Farming". The rest is Internet History.
-		</p>
-		<p>
-			If you came here looking for stuff about me and where I work etc. please see me on
-		</p>
-        
-      </section>
-	  <!-- Recent News / Updates Feed -->
-      <section class="news-section">
-        <h2>Latest News</h2>
-        {recentPosts.length === 0 ? (
-          <p>No posts yet!</p>
-        ) : (
-          recentPosts.map((post) => (
-            <article class="post-card">
-              <span class="post-date">
-                {post.data.pubDate.toLocaleDateString('en-US', {
-                  month: 'short',
-                  day: 'numeric',
-                  year: 'numeric'
-                })}
-              </span>
-              <h3>
-                <a href={`/news/${post.id.replace(/\.(md|mdx)$/, '')}/`}>
-				{post.data.title}
-				</a>
-              </h3>
-              <p class="post-desc">{post.data.description}</p>
-            </article>
-          ))
-        )}
-      </section>
-      <!-- Replace iframe src with your actual Spotify/Bandcamp embed link -->
-      <iframe class="player" src={latestRelease.embedUrl} loading="lazy"></iframe>
 
-      <nav class="links">
-        <a href="https://princefarming.bandcamp.com" target="_blank">Bandcamp</a>
-        <a href="https://open.spotify.com/artist/1M1BOLXPmJnQrKQY0Yph3z?si=clv4txKiQHGWTT4HQPrSQg" target="_blank">Spotify</a>
-        <a href="https://music.apple.com/us/artist/princefarming/6790264069" target="_blank">Apple Music</a>
-      </nav>
-    </main>
-  </body>
-</html>
+<BaseLayout title="princefarming | Home">
+  <div>
+    <h2>Hello!</h2>  
+    Princefarming = Michael Wynn
+<p>Back in the late 90s when I was creating a hotmail account I was looking for an alias to go by, at the time it seemed like a neat/cool thing. I remember reading a Life Magazine article that had a picture of Prince Charles bent over looking at a garden, the caption was "Prince Farming". The rest is Internet History.
+</p>
+<p>If you came here looking for stuff about me and where I work etc. please see me on
+</p>
+
+<h2>Music</h2>
+<p>
+<a href="https://www.meltedwings.ca" target="_blank">Melted Wings</a> (my solo stuff)</p>
+
+<a href="https://www.vickyvonvicky.com" target="_blank">Vicky von Vicky</a>
+<br/>
+  </div>
+  <div class="feed">
+    {posts.map((post) => (
+      <article class="post-card">
+        <header class="post-header">
+          <h2>
+            <a href={`/news/${post.id}`}>{post.data.title}</a>
+          </h2>
+          <div class="post-meta">
+            <span>Posted on <time>{post.data.pubDate}</time></span>
+          </div>
+        </header>
+
+        {post.data.image && (
+          <a href={`/news/${post.id}`}>
+            <img src={post.data.image} alt={post.data.title} class="featured-image" />
+          </a>
+        )}
+
+        {post.data.description && (
+          <p class="excerpt">{post.data.description}</p>
+        )}
+
+        <div class="post-footer">
+          <a href={`/news/${post.id}`} class="read-more">Continue reading &rarr;</a>
+        </div>
+      </article>
+    ))}
+  </div>
+</BaseLayout>
