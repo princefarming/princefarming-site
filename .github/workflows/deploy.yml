@@ -24,13 +24,12 @@ jobs:
       - name: Build Astro Site
         run: npm run build
 
-      - name: Sync Files to IONOS via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: SFTP Deploy to IONOS
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
-          server: ${{ secrets.FTP_SERVER }}
+          host: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           port: 22
-          protocol: ftps
-          local-dir: ./dist/
-          server-dir: ./
+          local_path: './dist/*'
+          remote_path: './'
