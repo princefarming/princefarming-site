@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getEntry, render } from 'astro:content';
+
+const aboutPage = await getEntry('pages', 'about');
+// 1. Guard check
+if (!aboutPage) {
+  throw new Error("Could not find 'about.md' in 'src/content/pages/'");
+}
+
+// 2. Render using the verified entry
+const { Content } = await render(aboutPage);
+---
+
+<BaseLayout title={aboutPage.data.title}>
+  <section class="page-header">
+    <h1>{aboutPage.data.heading || "About"}</h1>
+  </section>
+
+  <article class="about-body">
+    <Content />
+  </article>
+</BaseLayout>

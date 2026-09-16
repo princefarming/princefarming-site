@@ -1,15 +1,19 @@
+# Local Development Flag
+local_backend: true
+
+# Root Backend Configuration
 backend:
   name: github
   repo: princefarming/princefarming-site
   branch: main
-  use_pkce: true
-  app_id: Ov23ctOUfhCq4Galx2d7
 
-# Media folder where uploaded images are saved
+# Root Media Settings (Required)
 media_folder: "public/uploads"
 public_folder: "/uploads"
 
+# Content Collections
 collections:
+  # 1. Blog Collection
   - name: "blog"
     label: "News & Updates"
     folder: "src/content/blog"
@@ -19,4 +23,25 @@ collections:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Publish Date", name: "pubDate", widget: "datetime", format: "YYYY-MM-DD", dateFormat: "YYYY-MM-DD", timeFormat: false }
       - { label: "Description", name: "description", widget: "string", required: false }
+      - { label: "Featured Image", name: "image", widget: "image", required: false }
       - { label: "Body", name: "body", widget: "markdown" }
+
+  # 2. Header Pages File Collection
+  - name: "pages"
+    label: "Header Pages"
+    files:
+      - label: "About Page"
+        name: "about"
+        file: "src/content/pages/about.md"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Heading", name: "heading", widget: "string" }
+          - { label: "Body Content", name: "body", widget: "markdown" }
+
+      - label: "Music Page"
+        name: "music"
+        file: "src/content/pages/music.md"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Subtitle", name: "subtitle", widget: "string" }
+          - { label: "Body / Discography Notes", name: "body", widget: "markdown" }
