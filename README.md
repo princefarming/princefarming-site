@@ -68,6 +68,7 @@ Click "Log in with Local Backend".
 You can now create, edit, and save content directly to your local codebase.
 
 ## 🛠️ Project Structure
+```
 Plaintext
 ├── public/
 │   └── admin/
@@ -79,6 +80,7 @@ Plaintext
 │   ├── components/           # Reusable Astro components
 │   └── pages/                # Astro routing & page templates
 └── package.json
+```
 
 ## 📄 License
 All content and code rights reserved.
